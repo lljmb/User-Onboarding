@@ -15,7 +15,6 @@ export default function UserForm(props) {
   }
 
   const onChange = evt => {
-    /* 🔥 FIX THIS SO IT ALSO WORKS WITH CHECKBOXES */
     const { name, value, type, checked } = evt.target
     const valueToUse = type === 'checkbox' ? checked : value
     change(name, valueToUse)
@@ -26,23 +25,19 @@ export default function UserForm(props) {
     <form className='form container' onSubmit={onSubmit}>
       <div className='form-group submit'>
 
-        {/* 🔥 DISABLE THE BUTTON */}
         <button disabled={disabled}>submit</button>
 
         <div className='errors'>
-          {/* 🔥 RENDER THE VALIDATION ERRORS HERE */}
           <div>{errors.name}</div>
           <div>{errors.email}</div>
           <div>{errors.password}</div>
-          <div>{errors.civil}</div>
+          <div>{errors.terms}</div>
         </div>
       </div>
 
       <div className='form-group inputs'>
         <h4>General information</h4>
 
-        {/* ////////// TEXT INPUTS ////////// */}
-        {/* ////////// TEXT INPUTS ////////// */}
         {/* ////////// TEXT INPUTS ////////// */}
         <label>Name&nbsp;
           <input
@@ -73,8 +68,6 @@ export default function UserForm(props) {
 
         <h4>Do You Agree to the Terms of Service?</h4>
 
-        {/* ////////// CHECKBOXES ////////// */}
-        {/* ////////// CHECKBOXES ////////// */}
         {/* ////////// CHECKBOXES ////////// */}
         <label>Agree
           <input 

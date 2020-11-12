@@ -34,7 +34,7 @@ export default function App() {
   //////////////// STATES ////////////////
   //////////////// STATES ////////////////
   //////////////// STATES ////////////////
-  const [users, setUsers] = useState(initialUsers)          // array of user objects
+  const [users, setUsers] = useState([initialUsers])          // array of user objects
   const [formValues, setFormValues] = useState(initialFormValues) // object
   const [formErrors, setFormErrors] = useState(initialFormErrors) // object
   const [disabled, setDisabled] = useState(initialDisabled)       // boolean
@@ -46,33 +46,28 @@ export default function App() {
     // 🔥 STEP 5- IMPLEMENT! ON SUCCESS PUT USERS IN STATE
     //    helper to [GET] all users from `http://buddies.com/api/friends`
     axios
-    .get('http://reqres.in/api/users')
+    .get('https://reqres.in/api/users')
     .then((res) => {
-      setUsers(res.data);
-      console.log(res.data)
+      const userData = [res.data.data];
+      setUsers(res.data.data)
+      console.log(userData);
     })
-    .catch((err) => console.log(err, 'it broke'))
-
+    .catch((err) => console.log(err, 'it broke'));
   }
 
   const postNewUser = newUser => {
-    // 🔥 STEP 6- IMPLEMENT! ON SUCCESS ADD NEWLY CREATED FRIEND TO STATE
-    //    helper to [POST] `newUser` to `http://buddies.com/api/friends`
-    //    and regardless of success or failure, the form should reset
     axios
-    .post('http://reqres.in/api/users', newUser)
+    .post('https://reqres.in/api/users', newUser)
     .then(res => {
       setUsers([res.data, ...users])
       setFormValues(initialFormValues)
+      console.log(res.data)
     })
     .catch(err =>  console.log(err, 'it broke again'))
   }
 
-  //////////////// EVENT HANDLERS ////////////////
-  //////////////// EVENT HANDLERS ////////////////
-  //////////////// EVENT HANDLERS ////////////////
+
   const inputChange = (name, value) => {
-    // 🔥 STEP 10- RUN VALIDATION WITH YUP
     // yup.reach will allow us to reach iinto the schema & test only one part
     // we give reach the schema as the first arg & the test as the second
     Yup
@@ -95,7 +90,7 @@ export default function App() {
     })
     setFormValues({
       ...formValues,
-      [name]: value // NOT AN ARRAY
+      [name]: value 
     })
   }
 
@@ -105,7 +100,7 @@ export default function App() {
       email: formValues.email.trim(),
       password: formValues.password.trim(),
     }
-    // 🔥 STEP 8- POST NEW USER USING HELPER
+
     postNewUser(newUser);
   }
 
@@ -117,12 +112,6 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    // 🔥 STEP 9- ADJUST THE STATUS OF `disabled` EVERY TIME `formValues` CHANGES
-    /* Each time the form value state is updated, check to see if it is valid per our schema. 
-  This will allow us to enable/disable the submit button.*/
-    /* We pass the entire state into the entire schema, no need to use reach here. 
-    We want to make sure it is all valid before we allow a user to submit
-    isValid comes from Yup directly */
     schema.isValid(formValues).then(valid => {
       setDisabled(!valid);
     });
